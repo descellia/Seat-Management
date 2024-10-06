@@ -1,0 +1,183 @@
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(270deg, #F5EFEB, #577C8E); /* Warna awal gradien */
+  background-size: 400% 400%; /* Mengatur ukuran background untuk animasi */
+  animation: gradientAnimation 15s ease infinite; /* Mengatur durasi dan pola animasi */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  flex-direction: column;
+  margin: 0;
+  padding: 20px;
+  color: #000; /* Warna teks menjadi hitam */
+}
+
+/* Keyframes untuk animasi gradasi */
+@keyframes gradientAnimation {
+  0% {
+      background-position: 0% 0%; /* Titik awal posisi gradien */
+  }
+  50% {
+      background-position: 100% 100%; /* Titik pertengahan posisi gradien */
+  }
+  100% {
+      background-position: 0% 0%; /* Kembali ke titik awal */
+  }
+}
+
+.wave {
+  background: rgb(255 255 255 / 25%);
+  border-radius: 1000% 1000% 0 0;
+  position: fixed;
+  width: 200%;
+  height: 12em;
+  animation: wave 10s -3s linear infinite;
+  transform: translate3d(0, 0, 0);
+  opacity: 0.8;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.wave:nth-of-type(2) {
+  bottom: -1.25em;
+  animation: wave 18s linear reverse infinite;
+  opacity: 0.8;
+}
+
+.wave:nth-of-type(3) {
+  bottom: -2.5em;
+  animation: wave 20s -1s reverse infinite;
+  opacity: 0.9;
+}
+
+@keyframes wave {
+  2% {
+      transform: translateX(1);
+  }
+
+  25% {
+      transform: translateX(-25%);
+  }
+
+  50% {
+      transform: translateX(-50%);
+  }
+
+  75% {
+      transform: translateX(-25%);
+  }
+
+  100% {
+      transform: translateX(1);
+  }
+}
+
+.logo {
+  position: center;
+  top: 0;
+  left: 0;
+  width: 150px;
+  height: 60px;
+}
+
+.welcome-container {
+  text-align: center;
+  margin: 40px auto;
+}
+
+.house-icon {
+  height: 300px;
+  display: block;
+  margin: 0 auto;
+}
+
+.container {
+  max-width: 100px;
+  margin: 40px auto;
+  text-align: center;
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.input-box {
+  margin: 40px auto;
+  position: center;
+}
+
+.input-box input[type="text"] {
+  width: 510px;
+  height: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: #577C8E;
+  font-weight: bold;
+  background-color: #F4EFEB;
+}
+
+.form-control {
+  width: 550px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #F4EFEB;
+  color: #577C8E;
+  font-weight: bold;
+  margin: 40px auto;
+  position: center;
+}
+
+.login-container {
+  text-align: center;
+}
+
+.login-button {
+  background-color: #75b3d1;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  display: inline-block;
+  width: 100%;
+}
+
+.login-button:hover {
+  background-color: #577C8E;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .body{
+    padding: 10px;
+  }
+  
+  .house-icon {
+      height: 200px;
+  }
+
+  .input-box input[type="text"], .form-control, .login-button {
+      padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  #logo {
+      width: 100px;
+      height: 40px;
+  }
+
+  .house-icon {
+      height: 150px;
+  }
+
+  .input-box input[type="text"], .form-control, .login-button {
+      padding: 10px;
+  }
+}

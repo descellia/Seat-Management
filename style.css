@@ -1,0 +1,253 @@
+/* Reset basic styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(270deg, #F5EFEB, #577C8E); /* Warna awal gradien */
+    background-size: 400% 400%; /* Mengatur ukuran background untuk animasi */
+    animation: gradientAnimation 15s ease infinite; /* Mengatur durasi dan pola animasi */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+    margin: 0;
+    padding: 20px;
+    color: #000; /* Warna teks menjadi hitam */
+}
+
+/* Keyframes untuk animasi gradasi */
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 0%; /* Titik awal posisi gradien */
+    }
+    50% {
+        background-position: 100% 100%; /* Titik pertengahan posisi gradien */
+    }
+    100% {
+        background-position: 0% 0%; /* Kembali ke titik awal */
+    }
+}
+
+.wave {
+    background: rgb(255 255 255 / 25%);
+    border-radius: 1000% 1000% 0 0;
+    position: fixed;
+    width: 200%;
+    height: 12em;
+    animation: wave 10s -3s linear infinite;
+    transform: translate3d(0, 0, 0);
+    opacity: 0.8;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.wave:nth-of-type(2) {
+    bottom: -1.25em;
+    animation: wave 18s linear reverse infinite;
+    opacity: 0.8;
+}
+
+.wave:nth-of-type(3) {
+    bottom: -2.5em;
+    animation: wave 20s -1s reverse infinite;
+    opacity: 0.9;
+}
+
+@keyframes wave {
+    2% {
+        transform: translateX(1);
+    }
+
+    25% {
+        transform: translateX(-25%);
+    }
+
+    50% {
+        transform: translateX(-50%);
+    }
+
+    75% {
+        transform: translateX(-25%);
+    }
+
+    100% {
+        transform: translateX(1);
+    }
+}
+
+.container {
+    text-align: center;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    background-color: #ffffffa2;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+header .navbar {
+    display: flex;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    justify-content: space-between;
+}
+
+header .navbar img {
+    display: flex;
+    align-items: left;
+    height: 20%;
+    width: 20%;
+}
+
+.navbar .menu-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+}
+
+.navbar a {
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    color: #577C8E;
+}
+
+.navbar .navbar-menu.active {
+    color: #577C8E;
+    font-size: large;
+}
+
+#menu-button {
+    color: #000;
+    cursor: pointer;
+    display: none;
+}
+
+#menu-button:hover {
+    color: #577C8E;
+}
+
+#close-menu-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: #000;
+    cursor: pointer;
+    display: none;
+}
+
+#close-menu-button:hover {
+    color: #577C8E;
+}
+
+/* Style for logo */
+.logo {
+    display: block;
+    margin: 0 auto;
+    width: 300px; /* Sesuaikan ukuran sesuai kebutuhan */
+    height: auto; /* Agar mempertahankan aspek rasio gambar */
+}
+
+.logoSeat {
+    display: block;
+    margin: 0 auto;
+    width: 400px; /* Sesuaikan ukuran sesuai kebutuhan */
+    height: auto; /* Agar mempertahankan aspek rasio gambar */
+}
+
+/* Styling for the form */
+#initiate-form {
+    background-color: rgba(255, 255, 255, 0.9); /* Warna putih semi-transparan */
+    padding: 20px;
+    border-radius: 20px; /* Lengkungkan sudut form */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    color: #000; /* Warna teks form menjadi hitam */
+}
+
+#initiate-form label {
+    color: #000; /* Warna hitam untuk label */
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+#initiate-form input, 
+#initiate-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px; /* Lengkungkan sudut input dan select */
+    color: #000; /* Warna hitam untuk teks input */
+}
+
+#initiate-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #567c8d;
+    color: #fff;
+    border: none;
+    border-radius: 10px; /* Lengkungkan tombol */
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+#initiate-form button:hover {
+    background-color: #2F4156;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .logo {
+        width: 120px; /* Mengecilkan logo pada layar yang lebih kecil */
+    }
+
+    #initiate-form {
+        max-width: 100%; /* Form menyesuaikan dengan lebar layar */
+        padding: 15px;
+    }
+
+    #initiate-form button {
+        font-size: 0.9rem; /* Ukuran font tombol sedikit lebih kecil */
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        width: 100px; /* Lebih kecil lagi pada layar handphone */
+    }
+
+    #initiate-form {
+        padding: 10px;
+    }
+
+    #initiate-form label, 
+    #initiate-form input, 
+    #initiate-form select, 
+    #initiate-form button {
+        font-size: 0.85rem; /* Font lebih kecil untuk perangkat sangat kecil */
+    }
+}

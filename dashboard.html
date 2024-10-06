@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seat Availability Dashboard</title>
+    <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+
+    <div class="container"></div>
+        <header>
+            <nav class="navbar">
+                <a href="#"><img class="navbar-brand" src="Images/wtc.png" alt="Home"></a>
+                <ul class="menu-links">
+                    <span id="close-menu-button" class="material-symbols-outlined">close</span>
+                    <li><a class="navbar-menu" href="seat management.html">Management</a></li>
+                    <li><a class="navbar-menu" href="seatMap.html">Mapping</a></li>
+                    <li><a class="navbar-menu active" href="dashboard.html">Dashboard</a></li>
+                </ul>
+                <span id="menu-button" class="material-symbols-outlined">menu</span>
+            </nav>
+        </header>
+    </div>
+
+    <p>
+        <br>
+        <br>
+        <br>
+    </p>
+
+    <div class="container">
+        <img class="logoDashboard" src="Images/dashboard.png" alt="logo-Dashboard">
+    </div>
+
+    <p>
+        <br>
+        <br>
+        <br>
+    </p>
+
+    <div class="dashboard">
+        <h1>Seat Availability Dashboard</h1>
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Room</th>
+                    <th>Block</th>
+                    <th>Total Seats</th>
+                    <th>Booked Seats</th>
+                    <th>Available Seats</th>
+                </tr>
+            </thead>
+            <tbody id="seat-data">
+                <!-- Data kursi akan dimasukkan melalui JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const seatData = document.getElementById('seat-data');
+
+        // Ambil daftar room dan block yang tersimpan di localStorage
+        const savedRooms = JSON.parse(localStorage.getItem('savedRooms')) || [];
+        const savedBlocks = JSON.parse(localStorage.getItem('savedBlocks')) || [];
+
+        // Periksa setiap kombinasi room dan block
+        savedRooms.forEach(room => {
+            savedBlocks.forEach(block => {
+                const totalSeats = localStorage.getItem(`${room}-${block}-totalSeats`);
+                
+                if (totalSeats !== null) {  // Pastikan data totalSeats ada di localStorage
+                    const bookedSeats = localStorage.getItem(`${room}-${block}-bookedSeats`) || 0;
+                    const availableSeats = localStorage.getItem(`${room}-${block}-availableSeats`) || 0;
+
+                    // Tambahkan data ke tabel
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${room}</td>
+                        <td>${block}</td>
+                        <td>${totalSeats}</td>
+                        <td>${bookedSeats}</td>
+                        <td><span class="available-seats">${availableSeats}</span></td>
+                    `;
+                    seatData.appendChild(row);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

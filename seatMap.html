@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seat Map</title>
+    <link rel="stylesheet" href="style3.css">
+</head>
+<body>
+
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+
+    <div class="container"></div>
+        <header>
+            <nav class="navbar">
+                <a href="#"><img class="navbar-brand" src="Images/wtc.png" alt="Home"></a>
+                <ul class="menu-links">
+                    <span id="close-menu-button" class="material-symbols-outlined">close</span>
+                    <li><a class="navbar-menu" href="seat management.html">Management</a></li>
+                    <li><a class="navbar-menu active" href="seatMap.html">Mapping</a></li>
+                    <li><a class="navbar-menu" href="dashboard.html">Dashboard</a></li>
+                </ul>
+                <span id="menu-button" class="material-symbols-outlined">menu</span>
+            </nav>
+        </header>
+    </div>
+
+    <p><br><br><br></p>
+
+    <div class="container">
+        <img class="logoMapping" src="Images/mapping.png" alt="logo-seat">
+    </div>
+
+    <p><br><br><br></p>
+
+    <div class="container1">
+        <h1>Select Room and Block</h1>
+        
+        <label for="room-select">Choose Room:</label>
+        <select id="room-select">
+            <!-- Room options will be added dynamically -->
+        </select>
+
+        <label for="block-select">Choose Block:</label>
+        <select id="block-select">
+            <!-- Block options will be added dynamically -->
+        </select>
+
+        <button id="load-seat-map">Load Seat Map</button>
+        
+        <h2>Seat Map</h2>
+        <div class="seat-map" id="seat-map">
+            <!-- Kursi akan dirender di sini -->
+        </div>
+        <div class="button-container">
+            <button id="saveSeats" style="display: none;">Save Seats</button>
+            <button id="resetSeats" style="display: none;">Reset Seats</button>
+        </div>
+    </div>
+
+    <script>
+        const seatColors = {
+            available: 'available',   // Hijau
+            reserved: 'reserved',     // Kuning
+            occupied: 'occupied',     // Merah
+            noUse: 'no-use'           // Hitam
+        };
+
+        // Ambil data Room dan Block yang disimpan di localStorage
+        const savedRooms = JSON.parse(localStorage.getItem('savedRooms')) || [];
+        const savedBlocks = JSON.parse(localStorage.getItem('savedBlocks')) || [];
+
+        const roomSelect = document.getElementById('room-select');
+        const blockSelect = document.getElementById('block-select');
+
+        // Populate room and block dropdowns based on saved data
+        function populateDropdowns() {
+            savedRooms.forEach(room => {
+                const option = document.createElement('option');
+                option.value = room;
+                option.textContent = room;
+                roomSelect.appendChild(option);
+            });
+
+            savedBlocks.forEach(block => {
+                const option = document.createElement('option');
+                option.value = block;
+                option.textContent = block;
+                blockSelect.appendChild(option);
+            });
+        }
+
+        populateDropdowns();
+
+        // Event listener for loading the seat map based on selected room and block
+        document.getElementById('load-seat-map').addEventListener('click', () => {
+            const selectedRoom = roomSelect.value;
+            const selectedBlock = blockSelect.value;
+            if (selectedRoom && selectedBlock) {
+                loadSeatMap(selectedRoom, selectedBlock);
+            } else {
+                alert('Please select both Room and Block');
+            }
+        });
+
+        function loadSeatMap(room, block) {
+            const seatMap = document.getElementById('seat-map');
+            seatMap.innerHTML = ''; // Clear previous seat map
+
+            const rows = parseInt(localStorage.getItem(`${room}-${block}-rows`)) || 5;
+            const cols = parseInt(localStorage.getItem(`${room}-${block}-cols`)) || 10;
+
+            for (let row = 0; row < rows; row++) {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'seat-row';
+
+                for (let col = 0; col < cols; col++) {
+                    const seat = document.createElement('div');
+                    seat.className = 'seat available';  // Default: Kursi available
+                    seat.dataset.row = row;
+                    seat.dataset.col = col;
+
+                    // Ambil status kursi dari localStorage
+                    const savedStatus = localStorage.getItem(`${room}-${block}-seat-${row}-${col}`);
+                    if (savedStatus) {
+                        seat.className = `seat ${savedStatus}`;
+                    }
+
+                    // Event listener untuk toggle status kursi
+                    seat.addEventListener('click', () => toggleSeatStatus(seat, room, block));
+
+                    rowDiv.appendChild(seat);
+                }
+
+                seatMap.appendChild(rowDiv);
+            }
+
+            // Tampilkan tombol save dan reset
+            document.getElementById('saveSeats').style.display = 'block';
+            document.getElementById('resetSeats').style.display = 'block'; // Show Reset Button
+        }
+
+        // Toggle status kursi (berurutan dari available -> reserved -> occupied -> no-use)
+        function toggleSeatStatus(seat, room, block) {
+            if (seat.classList.contains(seatColors.available)) {
+                seat.classList.remove(seatColors.available);
+                seat.classList.add(seatColors.reserved);   // Available ke Reserved
+            } else if (seat.classList.contains(seatColors.reserved)) {
+                seat.classList.remove(seatColors.reserved);
+                seat.classList.add(seatColors.occupied);   // Reserved ke Occupied
+            } else if (seat.classList.contains(seatColors.occupied)) {
+                seat.classList.remove(seatColors.occupied);
+                seat.classList.add(seatColors.noUse);      // Occupied ke No Use
+            } else if (seat.classList.contains(seatColors.noUse)) {
+                seat.classList.remove(seatColors.noUse);
+                seat.classList.add(seatColors.available);  // No Use kembali ke Available
+            }
+
+            // Simpan status kursi di localStorage
+            const row = seat.dataset.row;
+            const col = seat.dataset.col;
+            localStorage.setItem(`${room}-${block}-seat-${row}-${col}`, seat.classList[1]);
+
+            // Update data dashboard
+            updateDashboardData(room, block);
+        }
+
+        // Function to update dashboard data
+        function updateDashboardData(room, block) {
+            const rows = parseInt(localStorage.getItem(`${room}-${block}-rows`));
+            const cols = parseInt(localStorage.getItem(`${room}-${block}-cols`));
+            const totalSeats = rows * cols;
+            let bookedSeats = 0;
+            let noUseSeats = 0;
+
+            // Hitung jumlah kursi yang booked (reserved atau occupied) dan no-use
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    const seatStatus = localStorage.getItem(`${room}-${block}-seat-${r}-${c}`);
+                    if (seatStatus === 'reserved' || seatStatus === 'occupied') {
+                        bookedSeats++;
+                    } else if (seatStatus === 'no-use') {
+                        noUseSeats++;
+                    }
+                }
+            }
+
+            const availableSeats = totalSeats - bookedSeats - noUseSeats;
+
+            // Simpan data yang diperbarui ke localStorage
+            localStorage.setItem(`${room}-${block}-totalSeats`, totalSeats);
+            localStorage.setItem(`${room}-${block}-bookedSeats`, bookedSeats);
+            localStorage.setItem(`${room}-${block}-availableSeats`, availableSeats);
+            localStorage.setItem(`${room}-${block}-noUseSeats`, noUseSeats); // Opsional, untuk melacak kursi yang no-use
+        }
+
+        // Simpan status semua kursi di localStorage
+        document.getElementById('saveSeats').addEventListener('click', () => {
+            alert('Seat selection saved!');
+            // Simpan state kursi ke localStorage jika diperlukan sebelum pergi ke dashboard
+            window.location.href = 'dashboard.html';
+        });
+
+        // Reset semua kursi menjadi 'available' (kecuali 'no-use')
+        document.getElementById('resetSeats').addEventListener('click', () => {
+            const seatMap = document.getElementById('seat-map');
+            const seats = seatMap.querySelectorAll('.seat');
+
+            seats.forEach(seat => {
+                if (!seat.classList.contains(seatColors.noUse)) { // Skip 'no-use' seats
+                    seat.classList.remove(seatColors.reserved, seatColors.occupied);
+                    seat.classList.add(seatColors.available); // Reset to 'available'
+                    
+                    const row = seat.dataset.row;
+                    const col = seat.dataset.col;
+                    const room = roomSelect.value;
+                    const block = blockSelect.value;
+
+                    // Update localStorage untuk mencerminkan reset
+                    localStorage.setItem(`${room}-${block}-seat-${row}-${col}`, seatColors.available);
+                }
+            });
+
+            // Update data dashboard setelah reset
+            updateDashboardData(roomSelect.value, blockSelect.value);
+            
+            alert('All seats have been reset except the ones marked as no-use.');
+        });
+    </script>
+
+</body>
+</html>

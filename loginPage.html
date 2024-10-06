@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log in</title>
+    <link rel="stylesheet" href="style4.css">
+    <script>
+        function login() {
+            // Ambil username dan role
+            var username = document.getElementById("username").value;
+            var role = document.getElementById("role").value;
+
+            alert("Welcome " + username + "!");
+
+            // Periksa peran user
+            if (role === "Admin") {
+                window.location.href = "seat management.html";
+            } else if (role === "User") {
+                window.location.href = "dashboard.html";
+            } else {
+                alert("Please select a valid role.");
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+
+    <div class="container">
+        <img src="Images/wtc.png" class="logo" alt="WTC Logo">
+    </div>
+
+    <form onsubmit="return false;"> 
+        <div class="welcome-container">
+            <img src="Images/welcomeHome.png" class="house-icon">
+        </div>
+        <div class="input-box" id="input">
+            <input type="text" id="username" placeholder="Username" required>
+        </div>
+        <select class="form-control" id="role" required>
+            <option value="" disabled selected>Select Role</option>
+            <option value="Admin">Admin</option>
+            <option value="User">User</option>
+        </select>
+        <div class="login-container">
+            <button type="button" class="login-button" onclick="login()">Login</button>
+        </div>
+    </form>
+
+</body>
+</html>

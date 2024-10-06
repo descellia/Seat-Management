@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Booking Form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+
+    <div class="container"></div>
+        <header>
+            <nav class="navbar">
+                <a href="#"><img class="navbar-brand" src="Images/wtc.png" alt="Home"></a>
+                <ul class="menu-links">
+                    <span id="close-menu-button" class="material-symbols-outlined">close</span>
+                    <li><a class="navbar-menu active" href="seat management.html">Management</a></li>
+                    <li><a class="navbar-menu" href="seatMap.html">Mapping</a></li>
+                    <li><a class="navbar-menu" href="dashboard.html">Dashboard</a></li>
+                </ul>
+                <span id="menu-button" class="material-symbols-outlined">menu</span>
+            </nav>
+        </header>
+    </div>
+
+    <p>
+        <br>
+        <br>
+        <br>    
+    </p>
+
+    <div class="container">
+        <img class="logoSeat" src="Images/seat.png" alt="logo-seat">
+    </div>
+
+    <p>
+        <br>
+        <br>
+        <br>    
+    </p>
+
+    <section id="initiate">
+        <form id="initiate-form">
+            <label for="room">Room:</label>
+            <select id="room" name="room">
+                <option value="floor2">Floor 2</option>
+                <option value="floor3">Floor 3</option>
+                <option value="Yerusalem">Yerusalem</option>
+            </select>
+            <label for="block">Block:</label>
+            <select id="block" name="block">
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+            </select>
+            <label for="row">Row:</label>
+            <input type="number" id="row" name="row" required>
+            <label for="column">Column:</label>
+            <input type="number" id="column" name="column" required>
+            <button type="submit">Initiate Room</button>
+        </form>
+    </section>
+
+    <script>
+        const form = document.getElementById('initiate-form');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const room = document.getElementById('room').value;
+            const block = document.getElementById('block').value;
+            const row = document.getElementById('row').value;
+            const column = document.getElementById('column').value;
+
+            // Simpan data ke localStorage
+            localStorage.setItem('room', room);
+            localStorage.setItem('block', block);
+            localStorage.setItem(`${room}-${block}-rows`, row);
+            localStorage.setItem(`${room}-${block}-cols`, column);
+
+            // Simpan daftar room dan block jika belum ada
+            let savedRooms = JSON.parse(localStorage.getItem('savedRooms')) || [];
+            if (!savedRooms.includes(room)) {
+                savedRooms.push(room);
+                localStorage.setItem('savedRooms', JSON.stringify(savedRooms));
+            }
+
+            let savedBlocks = JSON.parse(localStorage.getItem('savedBlocks')) || [];
+            if (!savedBlocks.includes(block)) {
+                savedBlocks.push(block);
+                localStorage.setItem('savedBlocks', JSON.stringify(savedBlocks));
+            }
+
+            // Inisiasi kursi dan set semua kursi ke 'available'
+            initSeats(room, block, row, column);
+
+            // Redirect ke halaman seat map
+            window.location.href = 'seatmap.html';
+        });
+
+        function initSeats(room, block, rows, columns) {
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < columns; c++) {
+                    // Set semua kursi (termasuk 'no-use') menjadi 'available'
+                    localStorage.setItem(`${room}-${block}-seat-${r}-${c}`, 'available');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
