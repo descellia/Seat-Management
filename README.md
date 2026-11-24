@@ -1,4 +1,4 @@
-# Seat Management WTC
+# Seat Management 
 
 A lightweight, front-end seat management prototype for WTC venues. Admins set up rooms as seat grids, mark the status of each seat on an interactive map, and monitor seat availability from a summary dashboard. Everything runs in the browser with no backend or build step.
 
